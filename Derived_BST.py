@@ -1,16 +1,19 @@
 from bst import BST
 
+
 class Derived_BST(BST):
     def __init__(self):
         super().__init__()
 
-    def is_leaf(self, node):
-        if node.left == None and node.right == None:
+    @staticmethod
+    def is_leaf(node):
+        if node.left is None and node.right is None:
             return True
         return False
 
-    def is_branch(self, node):
-        if node.left != None and node.right != None:
+    @staticmethod
+    def is_branch(node):
+        if node.left is not None and node.right is not None:
             return True
         return False
 
@@ -30,9 +33,9 @@ class Derived_BST(BST):
         while current:
             if value >= current.value:
                 if current.value == value:
-                    if parent == None:
+                    if parent is None:
                         return None
-                    return parent.value
+                    return parent
                 else:
                     parent = current
                     current = current.right
@@ -61,15 +64,70 @@ class Derived_BST(BST):
 
         return current.value
 
-    # def breadth_first(self):
-    #     return self.bf_helper(self.root)
-    #
-    # def bf_helper(self, node):
-    #     queue_lst = []
-    #     queue_lst.append(node.val)
-    #     if node.left != None:
-    #         return self.bf_helper(node.left)
-    #     if
+    def total_leaf_nodes(self, node):
+        if node is None:
+            return 0
 
+        if self.is_leaf(node):
+            return 1
+        else:
+            return self.total_leaf_nodes(node.left) + self.total_leaf_nodes(node.right)
 
+    def total_leaf_nodes_iterative(self):
+        stack = list()
+        stack.append(self.root)
+        count = 0
+        while stack:
+            node = stack.pop()
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
+            if self.is_leaf(node):
+                count += 1
 
+        return count
+
+    def total_nonleaf_nodes(self):
+        stack = list()
+        stack.append(self.root)
+        count = 0
+        while stack:
+            node = stack.pop()
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
+            if not self.is_leaf(node):
+                count += 1
+
+        return count
+
+    def breadth_first(self):
+        queue_lst = list()
+        queue_lst.append(self.root)
+        display_lst = list()
+        while queue_lst:
+            node = queue_lst.pop(0)
+            if node.left:
+                queue_lst.append(node.left)
+            if node.right:
+                queue_lst.append(node.right)
+            display_lst.append(node.value)
+
+        return self.display_breadth(display_lst)
+
+    # This is a simple code to display a well-balanced breadth_first tree
+    @staticmethod
+    def display_breadth(display_lst):
+        power = 0
+        while display_lst:
+            count = 2 ** power
+            for i in range(count):
+                try:
+                    pop_item = display_lst.pop(0)
+                except IndexError:
+                    break
+                print(pop_item, end=' ')
+            power += 1
+            print()

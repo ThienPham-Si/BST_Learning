@@ -46,8 +46,8 @@ class Derived_BST(BST):
         print(f"The value {value} does not exist in the tree")
         return
 
-    # Since this is a BST, the right child must be bigger than parent, keep checking if the current pointer
-    # has a right child, if it has then set the current pointer to that child and repeat, if the current pointer
+    # Since this is a BST, the right child must be bigger than its parent, keep checking if the current pointer
+    # has a right child, if it has then go to that child and repeat the process, if the current pointer
     # doesn't have a right child it's the biggest value
     def get_max(self):
         current = self.root
@@ -115,9 +115,12 @@ class Derived_BST(BST):
                 queue_lst.append(node.right)
             display_lst.append(node.value)
 
-        return self.display_breadth(display_lst)
+        self.display_breadth(display_lst)
 
-    # This is a simple code to display a well-balanced breadth_first tree
+        return
+
+    # This is a simple code to display a well-balanced breadth_first tree, it will not work correctly
+    # if the levels are not filled
     @staticmethod
     def display_breadth(display_lst):
         power = 0
